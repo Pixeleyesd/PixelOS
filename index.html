@@ -12,10 +12,12 @@
             </p>
         </div>
         <div id="welcome" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: solid; width: 500px; padding: 8px; background-color: rgba(0, 0, 0, 0.5);">
-            <p id="windowheader" style="cursor: grab; margin: 0; padding: 4px; background-color: rgba(255,255,255,0.15); user-select: none; text-align: center;">
-                =
-            </p>
-            <p style="cursor: pointer" id="welcomeclose">Close</p>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div id="windowheader" style="cursor: grab; margin: 0; padding: 4px; background-color: rgba(255,255,255,0.15); user-select: none; flex: 1;">
+                    <p style="margin: 0; text-align: center;">=</p>
+                </div>
+                <div id="welcomeclose" style="width: 24px; height: 24px; background-color: red; cursor: pointer;"></div>
+            </div>
             <h1 style="padding: 4px; margin: 4px; background-color: #000; color: #fff">PixelOS</h1>
             <h2>Introduction</h2>
             <p>Welcome to PixelOS!<br>(I refuse to use rounded corners.) This design is simple and intentionally anti-AI.</p>
