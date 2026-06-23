@@ -1,4 +1,6 @@
+topBar.style.zIndex = 1000;
 document.addEventListener("DOMContentLoaded", () => {
+
   //clock
   const timeElement = document.querySelector("#timeElement");
   if (timeElement) {
@@ -40,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  var topBar = document.querySelector("#topBar")
   // window management magical stuff
   function closeWindow(element) {
     if (element) {
@@ -56,6 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // If you must, ensure it matches your CSS exactly:
       element.style.display = "block"; 
       element.style.position = "absolute"; // Ensure dragging works
+      biggestIndex++;  // Increment biggestIndex by 1
+      element.style.zIndex = biggestIndex;
+      topBar.style.zIndex = biggestIndex + 1;
     }
   }
 
@@ -128,4 +134,19 @@ document.addEventListener("DOMContentLoaded", () => {
       deselectIcon(selectedIcon);
     }
   });
-});   
+
+  var biggestIndex = 1;
+  function addWindowTapHandling(element) {
+    element.addEventListener("mousedown", () =>
+      handleWindowTap(element)
+    );
+  }
+  function handleWindowTap(element) {
+    biggestIndex++;  // Increment biggestIndex by 1
+    element.style.zIndex = biggestIndex;
+    topBar.style.zIndex = biggestIndex + 1;
+  }
+  addWindowTapHandling(welcomeScreen);
+  addWindowTapHandling(notesApp);
+}
+); 

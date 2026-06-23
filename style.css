@@ -19,7 +19,6 @@
     font-weight: 700;
     background-color: rgba(256, 256, 256, 0.125);
     padding: 4px 12px;
-    border-radius: 16px;
     cursor: pointer;
 }
 #welcome {
@@ -120,8 +119,8 @@ body {
     color: rgb(255, 255, 255);
 }
 .notesicon {
-  border: 2.5px solid transparent;
+    border: 2.5px solid transparent;
 }
 .notesicon.selected {
-  border: 2.5px solid #ffffff;
+    border: 2.5px solid #ffffff;
 }
