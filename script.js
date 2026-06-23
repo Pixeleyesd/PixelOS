@@ -19,7 +19,6 @@ function dragElement(element) {
     dragHandle.addEventListener("mousedown", startDragging); // only fires on header
 
     function startDragging(e) {
-      e.preventDefault();
       e.stopPropagation(); // dont bubble up to window tap handler
       initialX = e.clientX;
       initialY = e.clientY;
@@ -94,7 +93,167 @@ function dragElement(element) {
     });
   }
 
-  // --- 6. Desktop Icon Selection Logic ---
+  // contacts app window
+  const contactsApp = document.querySelector("#contactsAppOpen");
+  const contactsAppClose = document.querySelector("#contactsclose");
+
+  if (contactsApp) {
+      dragElement(contactsApp);
+  }
+
+  if (contactsAppClose && contactsApp) {
+      contactsAppClose.addEventListener("click", function() {
+          closeWindow(contactsApp);
+      });
+  }
+
+  const contactsIcon = document.getElementById("contactsicon");
+
+  function handleContactsIconTap(element) {
+      if (element.classList.contains("selected")) {
+          deselectIcon(element);
+          openWindow(contactsApp);
+      } else {
+          selectIcon(element);
+      }
+  }
+
+  if (contactsIcon) {
+      contactsIcon.addEventListener("click", function(e) {
+          e.stopPropagation();
+          handleContactsIconTap(this);
+      });
+  }
+
+  addWindowTapHandling(contactsApp);
+
+  // weather app window
+  const weatherApp = document.querySelector("#weatherAppOpen");
+  const weatherAppClose = document.querySelector("#weatherclose");
+
+  if (weatherApp) {
+      dragElement(weatherApp);
+  }
+
+  if (weatherAppClose && weatherApp) {
+      weatherAppClose.addEventListener("click", function() {
+          closeWindow(weatherApp);
+      });
+  }
+
+  const weatherIcon = document.getElementById("weathericon");
+
+  function handleWeatherIconTap(element) {
+      if (element.classList.contains("selected")) {
+          deselectIcon(element);
+          openWindow(weatherApp);
+          fetchWeather();
+      } else {
+          selectIcon(element);
+      }
+  }
+
+  if (weatherIcon) {
+      weatherIcon.addEventListener("click", function(e) {
+          e.stopPropagation();
+          handleWeatherIconTap(this);
+      });
+  }
+
+  document.getElementById("weatherRefresh").addEventListener("click", fetchWeather);
+
+  addWindowTapHandling(weatherApp);
+
+  function fetchWeather() {
+      const status = document.getElementById("weatherStatus");
+      const temp = document.getElementById("weatherTemp");
+      const wind = document.getElementById("weatherWind");
+      const humidity = document.getElementById("weatherHumidity");
+      const updated = document.getElementById("weatherUpdated");
+
+      status.textContent = "Loading...";
+      temp.textContent = "";
+      wind.textContent = "";
+      humidity.textContent = "";
+      updated.textContent = "";
+
+      // Auckland coordinates
+      fetch("https://api.open-meteo.com/v1/forecast?latitude=-36.8485&longitude=174.7633&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&wind_speed_unit=kmh&timezone=Pacific%2FAuckland")
+          .then(res => res.json())
+          .then(data => {
+              const c = data.current;
+              const codes = {
+                  0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast",
+                  45: "Fog", 48: "Icy fog", 51: "Light drizzle", 53: "Drizzle",
+                  55: "Heavy drizzle", 61: "Light rain", 63: "Rain", 65: "Heavy rain",
+                  71: "Light snow", 73: "Snow", 75: "Heavy snow", 80: "Light showers",
+                  81: "Showers", 82: "Heavy showers", 95: "Thunderstorm",
+              };
+              status.textContent = codes[c.weather_code] ?? "Unknown";
+              temp.textContent = "Temperature: " + c.temperature_2m + "°C";
+              wind.textContent = "Wind: " + c.wind_speed_10m + " km/h";
+              humidity.textContent = "Humidity: " + c.relative_humidity_2m + "%";
+              updated.textContent = "Updated: " + new Date(c.time).toLocaleString();
+          })
+          .catch(() => {
+              status.textContent = "Failed to load weather.";
+          });
+  }
+
+  // doom app window
+  const doomApp = document.querySelector("#doomAppOpen");
+  const doomAppClose = document.querySelector("#doomclose");
+  let dosbox_DOOM = null;
+
+  if (doomApp) {
+      dragElement(doomApp);
+  }
+
+  if (doomAppClose && doomApp) {
+    doomAppClose.addEventListener("click", function() {
+      closeWindow(doomApp);
+      if (dosbox_DOOM) {
+        document.getElementById("DOOM").innerHTML = "";
+        document.activeElement.blur();
+        dosbox_DOOM = null;
+        window.doomStarted = false;
+      }
+    });
+  }
+
+  const doomIcon = document.getElementById("doomicon");
+
+  function handleDoomIconTap(element) {
+      if (element.classList.contains("selected")) {
+          deselectIcon(element);
+          openWindow(doomApp);
+          if (!window.doomStarted) {
+              window.doomStarted = true;
+              dosbox_DOOM = new Dosbox({
+                  id: "DOOM",
+                  onload: function(dosbox) {
+                      dosbox_DOOM.run("https://thedoggybrad.github.io/doom_on_js-dos/DOOM-@evilution.zip", "./DOOM/DOOM.EXE");
+                  },
+                  onrun: function(dosbox, app) {
+                      console.log("App '" + app + "' is runned");
+                  }
+              });
+          }
+      } else {
+          selectIcon(element);
+      }
+  }
+
+  if (doomIcon) {
+      doomIcon.addEventListener("click", function(e) {
+          e.stopPropagation();
+          handleDoomIconTap(this);
+      });
+  }
+
+  addWindowTapHandling(doomApp);
+
+  // Desktop Icon Selection Logic
   const notesIcon = document.getElementById("notesicon");
   let selectedIcon = undefined;
 

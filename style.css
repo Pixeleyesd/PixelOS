@@ -153,3 +153,161 @@ button:hover {
 #noteContent {
     resize: none;
 }
+
+#contactsAppOpen {
+    position: absolute;
+    top: calc(50% - 150px);
+    left: calc(50% - 200px);
+    border: solid;
+    width: 400px;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+#contactsAppOpen.hidden {
+    display: none;
+}
+#contactscoolname {
+    padding: 4px;
+    margin: 4px;
+    background-color: #000;
+    color: #fff;
+}
+#contactswindowtop {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#contactsclose {
+    width: 24px;
+    height: 24px;
+    background-color: red;
+    cursor: pointer;
+}
+#contactsAppOpenheader {
+    cursor: grab;
+    margin: 0;
+    padding: 4px;
+    background-color: rgba(255,255,255,0.15);
+    user-select: none;
+    flex: 1;
+}
+#contactswindowdragger {
+    margin: 0;
+    text-align: center;
+}
+.contactsicon {
+    border: 2.5px solid transparent;
+}
+.contactsicon.selected {
+    border: 2.5px solid #ffffff;
+}
+.contact-card {
+    border: 1px solid white;
+    padding: 10px;
+    margin: 8px 0;
+}
+.contact-card h3 {
+    margin: 0 0 4px 0;
+}
+.contact-card p {
+    margin: 0 0 8px 0;
+}
+#weatherAppOpen {
+    position: absolute;
+    top: calc(50% - 150px);
+    left: calc(50% - 150px);
+    border: solid;
+    width: 300px;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+#weatherAppOpen.hidden {
+    display: none;
+}
+#weathercoolname {
+    padding: 4px;
+    margin: 4px;
+    background-color: #000;
+    color: #fff;
+}
+#weatherwindowtop {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#weatherclose {
+    width: 24px;
+    height: 24px;
+    background-color: red;
+    cursor: pointer;
+}
+#weatherAppOpenheader {
+    cursor: grab;
+    margin: 0;
+    padding: 4px;
+    background-color: rgba(255,255,255,0.15);
+    user-select: none;
+    flex: 1;
+}
+#weatherwindowdragger {
+    margin: 0;
+    text-align: center;
+}
+.weathericon {
+    border: 2.5px solid transparent;
+}
+.weathericon.selected {
+    border: 2.5px solid #ffffff;
+}
+#weatherContent {
+    border: 1px solid white;
+    padding: 10px;
+    margin: 8px 0;
+}
+#weatherContent p {
+    margin: 4px 0;
+}
+#doomAppOpen {
+    position: absolute;
+    top: calc(50% - 320px);
+    left: calc(50% - 460px);
+    border: solid;
+    width: 640px;
+    height: 435px;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+#doomAppOpen.hidden {
+    display: none;
+}
+#doomwindowtop {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#doomclose {
+    width: 24px;
+    height: 24px;
+    background-color: red;
+    cursor: pointer;
+}
+#doomAppOpenheader {
+    cursor: grab;
+    margin: 0;
+    padding: 4px;
+    background-color: rgba(255,255,255,0.15);
+    user-select: none;
+    flex: 1;
+}
+#doomwindowdragger {
+    margin: 0;
+    text-align: center;
+}
+.doomicon {
+    border: 2.5px solid transparent;
+}
+.doomicon.selected {
+    border: 2.5px solid #ffffff;
+}
+#DOOM > .dosbox-container { width: 640px; height: 400px; }
+#DOOM > .dosbox-container > .dosbox-overlay { background: url("https://thedoggybrad.github.io/doom_on_js-dos/DOOM.png"); }

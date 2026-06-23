@@ -2,6 +2,8 @@
 <html lang="en">
     <body>
         <script src="script.js" defer></script>
+        <script src="js-dos-api.js"></script>
+        <script src="js-dos-v3.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css" />
         <img id="background" src="Background.png" alt="Background image" />
         <div id="topBar">
@@ -24,10 +26,22 @@
             <p>Welcome to PixelOS!<br>(I refuse to use rounded corners.) This design is simple and intentionally anti-AI.</p>
             <br>
         </div>
-        <div id="desktopApps" style="padding-top: 16px; cursor: default;">
+        <div id="desktopApps" style="padding-top: 16px; cursor: default; display: flex; align-items: center;">
             <div style="text-align: center; padding: 16px; width: fit-content">
                 <img src="NotesApp.png" style="width: 64px; height: 64px; cursor: pointer;" id="notesicon" class="notesicon" />
                 <p style="margin: 0px; color: #fff; ">PixelNotes</p>
+            </div>
+            <div style="text-align: center; padding: 16px; width: fit-content">
+                <img src="ContactsApp.png" style="width: 64px; height: 64px; cursor: pointer;" id="contactsicon" class="contactsicon" />
+                <p style="margin: 0px; color: #fff;">PixelContacts</p>
+            </div>
+            <div style="text-align: center; padding: 16px; width: fit-content">
+                <img src="WeatherApp.png" style="width: 64px; height: 64px; cursor: pointer;" id="weathericon" class="weathericon" />
+                <p style="margin: 0px; color: #fff;">PixelWeather</p>
+            </div>
+            <div style="text-align: center; padding: 16px; width: fit-content">
+                <img src="DoomApp.webp" style="width: 64px; height: 64px; cursor: pointer;" id="doomicon" class="doomicon" />
+                <p style="margin: 0px; color: #fff;">DOOM</p>
             </div>
         </div>
         <div id="notesAppOpen" style="display: none;">
@@ -48,6 +62,55 @@
                 
                 <button id="saveBtn">Save Note</button>
             </p>
+        </div>
+        <div id="contactsAppOpen" style="display: none;">
+            <div id="contactswindowtop">
+                <div id="contactsAppOpenheader">
+                    <p id="contactswindowdragger">=</p>
+                </div>
+                <div id="contactsclose"></div>
+            </div>
+            <h1 id="contactscoolname">PixelContacts</h1>
+            <p>Find us here!</p>
+            <div id="contactsList">
+                <div class="contact-card">
+                    <h3>Discord</h3>
+                    <p>Join our community server.</p>
+                    <a href="https://discord.gg/Sk9dQcbtsV" target="_blank"><button>Join Discord</button></a>
+                </div>
+                <div class="contact-card">
+                    <h3>Modrinth</h3>
+                    <p>Check out our Minecraft modpack.</p>
+                    <a href="https://modrinth.com/modpack/portalminecraftedition" target="_blank"><button>View Modpack</button></a>
+                </div>
+            </div>
+        </div>
+        <div id="weatherAppOpen" style="display: none;">
+            <div id="weatherwindowtop">
+                <div id="weatherAppOpenheader">
+                    <p id="weatherwindowdragger">=</p>
+                </div>
+                <div id="weatherclose"></div>
+            </div>
+            <h1 id="weathercoolname">PixelWeather</h1>
+            <p>Auckland, New Zealand</p>
+            <div id="weatherContent">
+                <p id="weatherStatus">Loading...</p>
+                <p id="weatherTemp"></p>
+                <p id="weatherWind"></p>
+                <p id="weatherHumidity"></p>
+                <p id="weatherUpdated"></p>
+            </div>
+            <button id="weatherRefresh">Refresh</button>
+        </div>
+        <div id="doomAppOpen" style="display: none;">
+            <div id="doomwindowtop">
+                <div id="doomAppOpenheader">
+                    <p id="doomwindowdragger">=</p>
+                </div>
+                <div id="doomclose"></div>
+            </div>
+            <div id="DOOM" class="dosbox-default" style="margin-top: 10px;"></div>
         </div>
     </body>
 </html>
