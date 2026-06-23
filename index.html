@@ -14,7 +14,7 @@
         </div>
         <div id="welcome">
             <div id="welcomewindowtop">
-                <div id="windowheader">
+                <div id="welcomeheader">
                     <p id="windowdragger">=</p>
                 </div>
                 <div id="welcomeclose"></div>
@@ -32,13 +32,22 @@
         </div>
         <div id="notesAppOpen" style="display: none;">
             <div id="noteswindowtop">
-                <div id="noteswindowheader">
+                <div id="notesAppOpenheader">
                     <p id="noteswindowdragger">=</p>
                 </div>
                 <div id="notesclose"></div>
             </div>
             <h1 id="notescoolname">PixelNotes</h1>
             <p>Welcome to PixelNotes! A simple note-taking app for PixelOS :)<br></p>
+            <p style="display: block;">
+                <label for="noteTitle">Note Title:</label>
+                <input type="text" id="noteTitle" placeholder="Note Title" style="width:730px;">
+                
+                <label for="noteContent">Note Content:</label>
+                <textarea id="noteContent" placeholder="Write your note here..." style="width:730px;"></textarea>
+                
+                <button id="saveBtn">Save Note</button>
+            </p>
         </div>
     </body>
 </html>

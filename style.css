@@ -23,9 +23,9 @@
 }
 #welcome {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: calc(50% - 150px);
+    left: calc(50% - 250px);
+    /*transform: translate(-50%, -50%); */
     border: solid;
     width: 500px;
     padding: 8px;
@@ -36,11 +36,11 @@
 }
 #notesAppOpen {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: calc(50% - 187.5px);
+    left: calc(50% - 375px);
+    /*transform: translate(-50%, -50%); */
     border: solid;
-    width: 500px;
+    width: 750px;
     padding: 8px;
     background-color: rgba(0, 0, 0, 0.5);
 }
@@ -81,7 +81,7 @@
     background-color: red;
     cursor: pointer;
 }
-#windowheader {
+#welcomeheader {
     cursor: grab;
     margin: 0;
     padding: 4px;
@@ -89,7 +89,7 @@
     user-select: none;
     flex: 1;
 }
-#noteswindowheader {
+#notesAppOpenheader {
     cursor: grab;
     margin: 0;
     padding: 4px;
@@ -123,4 +123,33 @@ body {
 }
 .notesicon.selected {
     border: 2.5px solid #ffffff;
+}
+input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    border: white solid 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #464646;
+}
+
+@media (max-width: 600px) {
+    input[type="text"], textarea {
+        width: 90%;
+    }
+}
+
+#noteContent {
+    resize: none;
 }
