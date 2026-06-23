@@ -1,27 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-    <body style="font-family: Helvetica, Noto Sans, sans-serif; color: rgb(255, 255, 255);">
+    <body>
         <script src="script.js" defer></script>
-        <img style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1" src="Background.png" alt="Background image" />
-        <div style="display: flex; justify-content: space-between; padding-left: 10px; padding-right: 10px; backdrop-filter: blur(5px) grayscale(100%); background-color: rgba(0, 0, 0, 0.25); color: #fff;">
-            <p style="margin-left: 16px; font-weight: 700; background-color: rgba(256, 256, 256, 0.125); padding: 4px 12px; border-radius: 16px; cursor: pointer;" id="welcomeopen">
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <img id="background" src="Background.png" alt="Background image" />
+        <div id="topBar">
+            <p id="welcomeopen">
                 PixelOS
             </p>
-            <p id="timeElement" style="margin-left: 16px; font-weight: 700; background-color: rgba(256, 256, 256, 0.125); padding: 4px 12px; border-radius: 16px;">
+            <p id="timeElement">
                 Time
             </p>
         </div>
-        <div id="welcome" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: solid; width: 500px; padding: 8px; background-color: rgba(0, 0, 0, 0.5);">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div id="windowheader" style="cursor: grab; margin: 0; padding: 4px; background-color: rgba(255,255,255,0.15); user-select: none; flex: 1;">
-                    <p style="margin: 0; text-align: center;">=</p>
+        <div id="welcome">
+            <div id="welcomewindowtop">
+                <div id="windowheader">
+                    <p id="windowdragger">=</p>
                 </div>
-                <div id="welcomeclose" style="width: 24px; height: 24px; background-color: red; cursor: pointer;"></div>
+                <div id="welcomeclose"></div>
             </div>
-            <h1 style="padding: 4px; margin: 4px; background-color: #000; color: #fff">PixelOS</h1>
+            <h1 id="coolname">PixelOS</h1>
             <h2>Introduction</h2>
             <p>Welcome to PixelOS!<br>(I refuse to use rounded corners.) This design is simple and intentionally anti-AI.</p>
             <br>
+        </div>
+        <div id="desktopApps" style="padding-top: 16px; cursor: default;">
+            <div style="text-align: center; padding: 16px; width: fit-content">
+                <img src="NotesApp.png" style="width: 64px; height: 64px; cursor: pointer;" id="notesicon" class="notesicon" />
+                <p style="margin: 0px; color: #fff; ">PixelNotes</p>
+            </div>
+        </div>
+        <div id="notesAppOpen" style="display: none;">
+            <div id="noteswindowtop">
+                <div id="noteswindowheader">
+                    <p id="noteswindowdragger">=</p>
+                </div>
+                <div id="notesclose"></div>
+            </div>
+            <h1 id="notescoolname">PixelNotes</h1>
+            <p>Welcome to PixelNotes!<br></p>
         </div>
     </body>
 </html>
