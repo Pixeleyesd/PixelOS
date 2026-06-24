@@ -24,7 +24,7 @@ Uses Meteo's API. (https://api.open-meteo.com/v1/forecast?latitude=-36.8485&long
 # DOOM
 A DOS embed, with js-dos running DOOM-@evilution
 
-The shooting is broken at the moment (there is no way to do so, other than using a controller which is really jank with js-dos)
+To shoot, you have to press S, and to interact / open doors you have to press W. Not my choice but algs lol.
 
 ---
 
