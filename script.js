@@ -178,17 +178,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let terminalFocused = false;
 
-  // block keyboard from reaching dosbox when neither dosbox app is focused
-  ["keydown", "keyup", "keypress"].forEach(function(eventType) {
-    document.addEventListener(eventType, function(e) {
-      const anyStarted = doomEverStarted || dosemuEverStarted;
-      const anyFocused = doomFocused || dosemuFocused || terminalFocused;
-      if (anyStarted && !anyFocused) {
-        e.stopImmediatePropagation();
-      }
-    }, true);
-  });
-
   // clicking outside doom or the dos emulator unfocuses it
   document.addEventListener("mousedown", function(e) {
     if (doomApp && !doomApp.contains(e.target)) {
@@ -305,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
     terminalOutput.scrollTop = terminalOutput.scrollHeight;
   }
 
-  function loadPyodideOnce() { //yoinked from like reddit or stackoverflow or something. cant remember lol.
+  function loadPyodideOnce() {
     if (pyodideInstance) return Promise.resolve(pyodideInstance);
     if (pyodideLoading) return pyodideLoading;
     appendTerminalOutput("Loading Python...\n");
@@ -330,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
           appendTerminalOutput("(no terminal.py loaded)\n");
         })
         .then(function() {
-          appendTerminalOutput("done.\n");
+          appendTerminalOutput("Python ready.\n");
           return pyodide;
         });
     });
@@ -352,32 +341,61 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  terminalInput.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-      const command = terminalInput.value;
-      terminalInput.value = "";
-      appendTerminalOutput(">>> " + command + "\n");
-      if (command.trim() !== "") {
-        commandHistory.push(command);
-      }
-      historyIndex = commandHistory.length;
-      runPythonCommand(command);
-    } else if (e.key === "ArrowUp") {
-      if (historyIndex > 0) {
-        historyIndex--;
-        terminalInput.value = commandHistory[historyIndex];
-      }
-      e.preventDefault();
-    } else if (e.key === "ArrowDown") {
-      if (historyIndex < commandHistory.length - 1) {
-        historyIndex++;
-        terminalInput.value = commandHistory[historyIndex];
-      } else {
-        historyIndex = commandHistory.length;
+  // the terminal is fully insulated from dosbox: any keydown/keyup/keypress
+  // targeting terminalInput is stopped here immediately so it can never
+  // reach DOOM/DOSEMU's own global keyboard listener, regardless of
+  // whether those apps are currently focused. stopping propagation does
+  // not block native typing - only preventDefault() would do that, and
+  // we only call it for the arrow keys below.
+  document.addEventListener("keydown", function(e) {
+    if (e.target === terminalInput) {
+      if (e.key === "Enter") {
+        const command = terminalInput.value;
         terminalInput.value = "";
+        appendTerminalOutput(">>> " + command + "\n");
+        if (command.trim() !== "") {
+          commandHistory.push(command);
+        }
+        historyIndex = commandHistory.length;
+        runPythonCommand(command);
+      } else if (e.key === "ArrowUp") {
+        if (historyIndex > 0) {
+          historyIndex--;
+          terminalInput.value = commandHistory[historyIndex];
+        }
+        e.preventDefault();
+      } else if (e.key === "ArrowDown") {
+        if (historyIndex < commandHistory.length - 1) {
+          historyIndex++;
+          terminalInput.value = commandHistory[historyIndex];
+        } else {
+          historyIndex = commandHistory.length;
+          terminalInput.value = "";
+        }
+        e.preventDefault();
       }
-      e.preventDefault();
+      e.stopImmediatePropagation();
+      return;
     }
+    const anyStarted = doomEverStarted || dosemuEverStarted;
+    const anyFocused = doomFocused || dosemuFocused;
+    if (anyStarted && !anyFocused) {
+      e.stopImmediatePropagation();
+    }
+  }, true);
+
+  ["keyup", "keypress"].forEach(function(eventType) {
+    document.addEventListener(eventType, function(e) {
+      if (e.target === terminalInput) {
+        e.stopImmediatePropagation();
+        return;
+      }
+      const anyStarted = doomEverStarted || dosemuEverStarted;
+      const anyFocused = doomFocused || dosemuFocused;
+      if (anyStarted && !anyFocused) {
+        e.stopImmediatePropagation();
+      }
+    }, true);
   });
 
   if (terminalAppClose && terminalApp) {
