@@ -311,3 +311,46 @@ button:hover {
 }
 #DOOM > .dosbox-container { width: 640px; height: 400px; }
 #DOOM > .dosbox-container > .dosbox-overlay { background: url("https://thedoggybrad.github.io/doom_on_js-dos/DOOM.png"); }
+#dosAppOpen {
+    position: absolute;
+    top: calc(50% - 260px);
+    left: calc(50% - 320px);
+    border: solid;
+    width: 640px;
+    height: 435px;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+#dosAppOpen.hidden {
+    display: none;
+}
+#doswindowtop {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#dosclose {
+    width: 24px;
+    height: 24px;
+    background-color: red;
+    cursor: pointer;
+}
+#dosAppOpenheader {
+    cursor: grab;
+    margin: 0;
+    padding: 4px;
+    background-color: rgba(255,255,255,0.15);
+    user-select: none;
+    flex: 1;
+}
+#doswindowdragger {
+    margin: 0;
+    text-align: center;
+}
+.dosicon {
+    border: 2.5px solid transparent;
+}
+.dosicon.selected {
+    border: 2.5px solid #ffffff;
+}
+#DOSEMU > .dosbox-container { width: 640px; height: 400px; }

@@ -170,19 +170,30 @@ document.addEventListener("DOMContentLoaded", () => {
   let doomFocused = false;
   let doomEverStarted = false;
 
-  // block keyboard from reaching dosbox when doom isnt focused
+  const dosApp = document.querySelector("#dosAppOpen");
+  const dosAppClose = document.querySelector("#dosclose");
+  let dosbox_DOSEMU = null;
+  let dosemuFocused = false;
+  let dosemuEverStarted = false;
+
+  // block keyboard from reaching dosbox when neither dosbox app is focused
   ["keydown", "keyup", "keypress"].forEach(function(eventType) {
     document.addEventListener(eventType, function(e) {
-      if (doomEverStarted && !doomFocused) {
+      const anyStarted = doomEverStarted || dosemuEverStarted;
+      const anyFocused = doomFocused || dosemuFocused;
+      if (anyStarted && !anyFocused) {
         e.stopImmediatePropagation();
       }
     }, true);
   });
 
-  // clicking outside doom unfocuses it
+  // clicking outside doom or the dos emulator unfocuses it
   document.addEventListener("mousedown", function(e) {
     if (doomApp && !doomApp.contains(e.target)) {
       doomFocused = false;
+    }
+    if (dosApp && !dosApp.contains(e.target)) {
+      dosemuFocused = false;
     }
   });
 
@@ -195,6 +206,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  dragElement(dosApp);
+  addWindowTapHandling(dosApp);
+
+  dosApp.addEventListener("mousedown", function(e) {
+    if (e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") {
+      dosemuFocused = true;
+    }
+  });
+
   // notes inputs steal focus back from doom
   const noteTitleInput = document.getElementById('noteTitle');
   const noteContentInput = document.getElementById('noteContent');
@@ -202,12 +222,14 @@ document.addEventListener("DOMContentLoaded", () => {
   noteTitleInput.addEventListener("mousedown", function(e) {
     e.stopPropagation();
     doomFocused = false;
+    dosemuFocused = false;
     setTimeout(() => noteTitleInput.focus(), 0);
   });
 
   noteContentInput.addEventListener("mousedown", function(e) {
     e.stopPropagation();
     doomFocused = false;
+    dosemuFocused = false;
     setTimeout(() => noteContentInput.focus(), 0);
   });
 
@@ -224,7 +246,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         document.getElementById("DOOM").innerHTML = "";
         dosbox_DOOM = null;
-        // doomEverStarted stays true so capture listener keeps blocking dosbox zombie listeners
+      }
+      document.body.tabIndex = -1;
+      document.body.focus();
+    });
+  }
+
+  if (dosAppClose && dosApp) {
+    dosAppClose.addEventListener("click", function() {
+      closeWindow(dosApp);
+      dosemuFocused = false;
+      if (dosbox_DOSEMU) {
+        const canvas = document.querySelector("#DOSEMU canvas");
+        if (canvas) {
+          canvas.blur();
+          canvas.width = 0;
+          canvas.height = 0;
+        }
+        document.getElementById("DOSEMU").innerHTML = "";
+        dosbox_DOSEMU = null;
       }
       document.body.tabIndex = -1;
       document.body.focus();
@@ -234,6 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // desktop icons
   const notesIcon = document.getElementById("notesicon");
   const doomIcon = document.getElementById("doomicon");
+  const dosIcon = document.getElementById("dosicon");
   const contactsIcon = document.getElementById("contactsicon");
   const weatherIcon = document.getElementById("weathericon");
   let selectedIcon = undefined;
@@ -303,6 +344,31 @@ document.addEventListener("DOMContentLoaded", () => {
             id: "DOOM",
             onload: function(dosbox) {
               dosbox_DOOM.run("DOOM-@evilution.zip", "./DOOM/DOOM.EXE");
+            },
+            onrun: function(dosbox, app) {
+              console.log("App '" + app + "' is runned");
+            }
+          });
+        }
+      } else {
+        selectIcon(this);
+      }
+    });
+  }
+
+  if (dosIcon) {
+    dosIcon.addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (this.classList.contains("selected")) {
+        deselectIcon(this);
+        openWindow(dosApp);
+        dosemuFocused = true;
+        if (!dosbox_DOSEMU) {
+          dosemuEverStarted = true;
+          dosbox_DOSEMU = new Dosbox({
+            id: "DOSEMU",
+            onload: function(dosbox) {
+              dosbox_DOSEMU.run("js-dos-v3.zip", "COMMAND.COM");
             },
             onrun: function(dosbox, app) {
               console.log("App '" + app + "' is runned");
