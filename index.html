@@ -4,6 +4,7 @@
         <script src="script.js" defer></script>
         <script src="js-dos-api.js"></script>
         <script src="js-dos-v3.js"></script>
+        <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css" />
         <img id="background" src="Background.png" alt="Background image" />
         <div id="topBar">
@@ -46,6 +47,10 @@
             <div style="text-align: center; padding: 16px; width: fit-content">
                 <img src="DOSApp.png" style="width: 64px; height: 64px; cursor: pointer;" id="dosicon" class="dosicon" />
                 <p style="margin: 0px; color: #fff;">DOS Emulator</p>
+            </div>
+            <div style="text-align: center; padding: 16px; width: fit-content">
+                <img src="TerminalApp.png" style="width: 64px; height: 64px; cursor: pointer;" id="terminalicon" class="terminalicon" />
+                <p style="margin: 0px; color: #fff;">Terminal</p>
             </div>
         </div>
         <div id="notesAppOpen" style="display: none;">
@@ -124,6 +129,19 @@
                 <div id="dosclose"></div>
             </div>
             <div id="DOSEMU" class="dosbox-default" style="margin-top: 10px;"></div>
+        </div>
+        <div id="terminalAppOpen" style="display: none;">
+            <div id="terminalwindowtop">
+                <div id="terminalAppOpenheader">
+                    <p id="terminalwindowdragger">=</p>
+                </div>
+                <div id="terminalclose"></div>
+            </div>
+            <div id="terminalOutput"></div>
+            <div id="terminalInputLine">
+                <span id="terminalPrompt">&gt;&gt;&gt;</span>
+                <input type="text" id="terminalInput" autocomplete="off" spellcheck="false" />
+            </div>
         </div>
     </body>
 </html>

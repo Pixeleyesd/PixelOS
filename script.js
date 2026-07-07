@@ -176,11 +176,13 @@ document.addEventListener("DOMContentLoaded", () => {
   let dosemuFocused = false;
   let dosemuEverStarted = false;
 
+  let terminalFocused = false;
+
   // block keyboard from reaching dosbox when neither dosbox app is focused
   ["keydown", "keyup", "keypress"].forEach(function(eventType) {
     document.addEventListener(eventType, function(e) {
       const anyStarted = doomEverStarted || dosemuEverStarted;
-      const anyFocused = doomFocused || dosemuFocused;
+      const anyFocused = doomFocused || dosemuFocused || terminalFocused;
       if (anyStarted && !anyFocused) {
         e.stopImmediatePropagation();
       }
@@ -271,10 +273,125 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const terminalApp = document.querySelector("#terminalAppOpen");
+  const terminalAppClose = document.querySelector("#terminalclose");
+  const terminalInput = document.getElementById("terminalInput");
+  const terminalOutput = document.getElementById("terminalOutput");
+  let pyodideInstance = null;
+  let pyodideLoading = null;
+  let handleCommandFn = null;
+  let commandHistory = [];
+  let historyIndex = 0;
+
+  dragElement(terminalApp);
+  addWindowTapHandling(terminalApp);
+
+  terminalApp.addEventListener("mousedown", function(e) {
+    if (e.target !== terminalInput) {
+      terminalInput.focus();
+    }
+  });
+
+  terminalInput.addEventListener("focus", function() {
+    terminalFocused = true;
+  });
+
+  terminalInput.addEventListener("blur", function() {
+    terminalFocused = false;
+  });
+
+  function appendTerminalOutput(text) {
+    terminalOutput.textContent += text;
+    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+  }
+
+  function loadPyodideOnce() { //yoinked from like reddit or stackoverflow or something. cant remember lol.
+    if (pyodideInstance) return Promise.resolve(pyodideInstance);
+    if (pyodideLoading) return pyodideLoading;
+    appendTerminalOutput("Loading Python...\n");
+    pyodideLoading = loadPyodide({
+      indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/"
+    }).then(function(pyodide) {
+      pyodide.setStdout({ batched: function(msg) { appendTerminalOutput(msg + "\n"); } });
+      pyodide.setStderr({ batched: function(msg) { appendTerminalOutput(msg + "\n"); } });
+      pyodideInstance = pyodide;
+      return fetch("terminal.py")
+        .then(function(res) {
+          if (!res.ok) throw new Error("no terminal.py found");
+          return res.text();
+        })
+        .then(function(code) {
+          return pyodide.runPythonAsync(code);
+        })
+        .then(function() {
+          handleCommandFn = pyodide.globals.get("handle_command");
+        })
+        .catch(function() {
+          appendTerminalOutput("(no terminal.py loaded)\n");
+        })
+        .then(function() {
+          appendTerminalOutput("done.\n");
+          return pyodide;
+        });
+    });
+    return pyodideLoading;
+  }
+
+  function runPythonCommand(command) {
+    loadPyodideOnce().then(function() {
+      if (!handleCommandFn) {
+        appendTerminalOutput("no command handler loaded\n");
+        return;
+      }
+      const result = handleCommandFn(command);
+      if (result !== undefined && result !== null && result !== "") {
+        appendTerminalOutput(String(result) + "\n");
+      }
+    }).catch(function(err) {
+      appendTerminalOutput(String(err) + "\n");
+    });
+  }
+
+  terminalInput.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      const command = terminalInput.value;
+      terminalInput.value = "";
+      appendTerminalOutput(">>> " + command + "\n");
+      if (command.trim() !== "") {
+        commandHistory.push(command);
+      }
+      historyIndex = commandHistory.length;
+      runPythonCommand(command);
+    } else if (e.key === "ArrowUp") {
+      if (historyIndex > 0) {
+        historyIndex--;
+        terminalInput.value = commandHistory[historyIndex];
+      }
+      e.preventDefault();
+    } else if (e.key === "ArrowDown") {
+      if (historyIndex < commandHistory.length - 1) {
+        historyIndex++;
+        terminalInput.value = commandHistory[historyIndex];
+      } else {
+        historyIndex = commandHistory.length;
+        terminalInput.value = "";
+      }
+      e.preventDefault();
+    }
+  });
+
+  if (terminalAppClose && terminalApp) {
+    terminalAppClose.addEventListener("click", function() {
+      closeWindow(terminalApp);
+      terminalInput.blur();
+    });
+  }
+
   // desktop icons
   const notesIcon = document.getElementById("notesicon");
   const doomIcon = document.getElementById("doomicon");
   const dosIcon = document.getElementById("dosicon");
+  const terminalIcon = document.getElementById("terminalicon");
   const contactsIcon = document.getElementById("contactsicon");
   const weatherIcon = document.getElementById("weathericon");
   let selectedIcon = undefined;
@@ -375,6 +492,20 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           });
         }
+      } else {
+        selectIcon(this);
+      }
+    });
+  }
+
+  if (terminalIcon) {
+    terminalIcon.addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (this.classList.contains("selected")) {
+        deselectIcon(this);
+        openWindow(terminalApp);
+        terminalInput.focus();
+        loadPyodideOnce();
       } else {
         selectIcon(this);
       }
