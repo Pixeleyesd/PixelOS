@@ -429,3 +429,57 @@ button:hover {
     margin: 0;
     width: auto;
 }
+#halflifeAppOpen {
+    position: absolute;
+    top: calc(50% - 325px);
+    left: calc(50% - 450px);
+    box-sizing: border-box;
+    border: solid;
+    width: 900px;
+    height: 650px;
+    max-width: 95vw;
+    max-height: 90vh;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+#halflifeAppOpen.hidden {
+    display: none;
+}
+#halflifewindowtop {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: none;
+}
+#halflifeclose {
+    width: 24px;
+    height: 24px;
+    background-color: red;
+    cursor: pointer;
+}
+#halflifeAppOpenheader {
+    cursor: grab;
+    margin: 0;
+    padding: 4px;
+    background-color: rgba(255,255,255,0.15);
+    user-select: none;
+    flex: 1;
+}
+#halflifewindowdragger {
+    margin: 0;
+    text-align: center;
+}
+.halflifeicon {
+    border: 2.5px solid transparent;
+}
+.halflifeicon.selected {
+    border: 2.5px solid #ffffff;
+}
+#HALFLIFE {
+    flex: 1 1 auto;
+    width: 100%;
+    border: none;
+    margin-top: 10px;
+}

@@ -341,12 +341,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // the terminal is fully insulated from dosbox: any keydown/keyup/keypress
-  // targeting terminalInput is stopped here immediately so it can never
-  // reach DOOM/DOSEMU's own global keyboard listener, regardless of
-  // whether those apps are currently focused. stopping propagation does
-  // not block native typing - only preventDefault() would do that, and
-  // we only call it for the arrow keys below.
   document.addEventListener("keydown", function(e) {
     if (e.target === terminalInput) {
       if (e.key === "Enter") {
@@ -405,11 +399,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // half-life window
+  const halflifeApp = document.querySelector("#halflifeAppOpen");
+  const halflifeAppClose = document.querySelector("#halflifeclose");
+
+  dragElement(halflifeApp);
+  addWindowTapHandling(halflifeApp);
+
+  if (halflifeAppClose && halflifeApp) {
+    halflifeAppClose.addEventListener("click", function() {
+      closeWindow(halflifeApp);
+    });
+  }
+
   // desktop icons
   const notesIcon = document.getElementById("notesicon");
   const doomIcon = document.getElementById("doomicon");
   const dosIcon = document.getElementById("dosicon");
   const terminalIcon = document.getElementById("terminalicon");
+  const halflifeIcon = document.getElementById("halflifeicon");
   const contactsIcon = document.getElementById("contactsicon");
   const weatherIcon = document.getElementById("weathericon");
   let selectedIcon = undefined;
@@ -524,6 +532,18 @@ document.addEventListener("DOMContentLoaded", () => {
         openWindow(terminalApp);
         terminalInput.focus();
         loadPyodideOnce();
+      } else {
+        selectIcon(this);
+      }
+    });
+  }
+
+  if (halflifeIcon) {
+    halflifeIcon.addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (this.classList.contains("selected")) {
+        deselectIcon(this);
+        openWindow(halflifeApp);
       } else {
         selectIcon(this);
       }
