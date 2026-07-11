@@ -297,7 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function loadPyodideOnce() {
     if (pyodideInstance) return Promise.resolve(pyodideInstance);
     if (pyodideLoading) return pyodideLoading;
-    appendTerminalOutput("Loading Python...\n");
+    appendTerminalOutput("Loading...\n");
     pyodideLoading = loadPyodide({
       indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/"
     }).then(function(pyodide) {
@@ -314,13 +314,12 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(function() {
           handleCommandFn = pyodide.globals.get("handle_command");
-        })
-        .catch(function() {
-          appendTerminalOutput("(no terminal.py loaded)\n");
-        })
-        .then(function() {
-          appendTerminalOutput("Python ready.\n");
+          appendTerminalOutput("Loaded\n");
           return pyodide;
+        })
+        .catch(function(err) {
+          appendTerminalOutput("(terminal.py failed to load)\n");
+          appendTerminalOutput(String(err) + "\n");
         });
     });
     return pyodideLoading;
