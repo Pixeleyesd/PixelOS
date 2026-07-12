@@ -33,7 +33,8 @@ Also a js-dos embed, it's a full DOS implementation in the iframe.
 An embed of the Half Life in a browser project.
 
 # Terminal App
-```A fake (replica) linux terminal written in python. The commands available and their outputs are:```
+A fake (replica) linux terminal written in python. The commands available and their outputs are:
+
 ### help
 ```available commands: pixeleyesd, help, lsusb, ls, cat```
 ### pixeleyesd
