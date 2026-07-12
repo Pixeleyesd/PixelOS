@@ -26,6 +26,29 @@ A DOS embed, with js-dos running DOOM-@evilution
 
 To shoot, you have to press S, and to interact / open doors you have to press W. Not my choice but algs lol.
 
+# DOS Emulator
+Also a js-dos embed, it's a full DOS implementation in the iframe.
+
+# Half-Life
+An embed of the Half Life in a browser project.
+
+# Terminal App
+```A fake (replica) linux terminal written in python. The commands available and their outputs are:```
+### help
+```available commands: pixeleyesd, help, lsusb, ls, cat```
+### pixeleyesd
+```Sub 2 Pixeleyesd!```
+### lsusb
+```Bus 067 Device 607: ID 6bda: 677 Sixty Seven Corp. Mass Skibidi Device```
+### ls <directory, can also be left blank>
+```
+outputs the following if left blank:
+
+HomeworkFolder   gaming.sh
+```
+### cat <file>
+```outputs the contents of a file chosen```
+
 ---
 
 The idea of this "WebOS" is to be anti-AI. None was used. I did take a bunch of stuff off w3 and stackoverflow though lol.
